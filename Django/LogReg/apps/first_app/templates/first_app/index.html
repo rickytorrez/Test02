@@ -1,0 +1,41 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Learning Again</title>
+</head>
+    <body>
+        <h1>Register</h1>
+        <form action="/register" method="POST">
+            {% csrf_token %}
+            <input type="text" name="first" placeholder="First Name"><br>
+            <input type="text" name="last" placeholder="Last Name"><br>
+            <input type="text" name="username" placeholder="Username"><br>
+            <input type="text" name="email" placeholder="E-mail"><br>
+            <input type="date" name="dob"><br>
+            <input type="password" name="password" placeholder="Password"><br>
+            <input type="password" name="confirm" placeholder="Confirm Password"><br>
+            <input type="submit" value="Register">
+        </form>
+
+        {% if messages %}
+        <ul>
+            {% for message in messages %}
+            <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+
+
+
+        <hr>
+        <h1>Login</h1>
+        <form action="/login" method="POST">
+            {% csrf_token %}
+            <input type="text" name="email" placeholder="E-mail"><br>
+            <input type="password" name="password" placeholder="Password"><br>
+            <input type="submit" value="Login">
+        </form>
+    </body>
+</html>
