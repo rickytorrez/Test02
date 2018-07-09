@@ -15,6 +15,7 @@ def register(request):
         request.POST["password"],
         request.POST["confirm"]
     )
+    print response
 
     if response["valid"]:
         request.session["user_id"] = response["user"].id
