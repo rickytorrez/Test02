@@ -36,6 +36,7 @@ def login(request):
     else:
         for error_message in response["errors"]:
             messages.add_message(request, messages.ERROR, error_message)
+            print response
         return redirect("/")
 
 def dashboard(request):
