@@ -15,7 +15,6 @@ def register(request):
         request.POST["password"],
         request.POST["confirm"]
     )
-    print response
 
     if response["valid"]:
         request.session["user_id"] = response["user"].id
@@ -36,7 +35,6 @@ def login(request):
     else:
         for error_message in response["errors"]:
             messages.add_message(request, messages.ERROR, error_message)
-            print response
         return redirect("/")
 
 def dashboard(request):
