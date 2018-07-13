@@ -1,6 +1,6 @@
 my_variable = "hello"
 
-# LIST
+# LIST TUPLES AND SETS #
 
 grade_one = 77
 grade_two = 80
@@ -31,6 +31,29 @@ print(gradesList)
 # we cannot change the value of a particular index on a tuple because they're inmutable #
 # we cannot change the value of a particular index on a set because they are unordered #
 
-# howecer, we can add variables to a set #
+# however, we can add variables to a set #
 setGrades.add(89)
 print(setGrades) 
+
+
+# SET OF OPERATIONS # 
+print("___________________________")
+print("SET OF OPERATIONS")
+print("___________________________")
+
+your_lottery_numbers = {1,2,3,4,5}
+winning_numbers = {1,3,5,7,9,11}
+
+# how to check if these numbers match #
+
+# intersection prints the numbers that are in the first and second set # 
+print(your_lottery_numbers.intersection(winning_numbers))
+#  set([1, 3, 5])   #
+
+# union combines both sets # 
+print(your_lottery_numbers.union(winning_numbers))
+#  set([1, 2, 3, 4, 5, 7, 9, 11])  #
+
+# diference prints the numbes that are different #
+print({1,2,3,4}.difference({1,2}))
+#  set([3, 4])  #
