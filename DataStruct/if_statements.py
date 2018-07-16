@@ -16,10 +16,10 @@ else:
 def who_do_you_know():
     people = input ("Enter the people you know separated by commas: ")      # John,Rolf,Anna,Greg
     people_list = people.split(",")                                         # ["John","Rolf","Anna","Greg"]
-    people_without_spaces = []
-    for person in people_list:                                              # loop to remove spaces from names
-        people_without_spaces.append(person.strip())
-
+    people_without_spaces = [person.strip().lower() for person in people_list]
+    # for person in people_list:                                              
+    # loop to remove spaces from names
+    # people_without_spaces.append(person.strip())
     return people_without_spaces
 
 def ask_user():
