@@ -7,6 +7,7 @@ person = input("Enter the person you know: ")
 
 
 # format lets you substitute things on strings #
+# must use greater version than python3 #
 if person in known_people:
     print("You know {}!".format(person))
 else:
