@@ -5,7 +5,7 @@ my_set = {1, 3, 5}
 my_dict = {'name': 'Rick', 'age':90, 'grades': [13,45,66,90]}                   # dictionaries are keys and values set, allow to to store data
 another_dict = {1 : 15, 2 : 75, 3 : 150}
 
-# tuple within a dictionary
+# tuple within a dicti{onary
 lottery_player = {
     'name': 'Fel',
     'numbers': (13,45,66,23,22)
