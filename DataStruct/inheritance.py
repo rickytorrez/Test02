@@ -23,5 +23,5 @@ print(anna.salary)
 
 friend = WorkingStudent.friend(anna, 'Greg')
 
-# print(friend.name)
-# print(friend.school)
+print(friend.name)
+print(friend.school)
