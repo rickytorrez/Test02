@@ -7,9 +7,9 @@ class Student:
     def average(self):
         return sum(self.marks) / len(self.marks)
 
-    @classmethod
-    def friend(cls, origin, friend_name):
-        return cls(friend_name, origin.school)
+    # @classmethod
+    # def friend(cls, origin, friend_name, salary):
+    #     return cls(friend_name, origin.school, salary)
 
 
 class WorkingStudent(Student):
@@ -21,7 +21,8 @@ class WorkingStudent(Student):
 anna = WorkingStudent('Anna', 'Oxford', 20.00)
 print(anna.salary)
 
-friend = WorkingStudent.friend(anna, 'Greg')
+# friend = WorkingStudent.friend(anna, 'Greg', 17.50)
 
-print(friend.name)
-print(friend.school)
+# print(friend.name)
+# print(friend.school)
+# print(friend.salary)
