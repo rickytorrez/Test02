@@ -45,7 +45,6 @@ class Item(Resource):
             self.insert(item)                                                                               # Uses the class method bellow to insert values into the database
         except:
             return {'message': 'An error occurred while inserting the item'}, 500                           # 500 Internal server error
-
         return item, 201                                                                                    # Return the item
 
 #################### @CLASSMETHOD TO INSERT AN ITEM INTO THE DATABASE - USED IN POST & PUT METHODS ###################

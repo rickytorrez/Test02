@@ -1,48 +1,35 @@
-import sqlite3
+from db import db
 
-class ItemModel:
+class ItemModel(db.Model):                                                                                  # db.Model tells SQLAlchemy that Item model is a thing that we
+                                                                                                            # will save and retrieve from the database
+    __tablename__ = 'items'                                                                                 # Create the items DATABASE
+
+    id = db.Column(db.Integer, primary_key=True)                                                            # Create the id Colummn
+    name = db.Column(db.String(80))                                                                         # Create the name column
+    price = db.Column(db.Float(precision=2))                                                                # Create the price column with two decimal points
+
     def __init__(self, name, price):
         self.name = name
         self.price = price
 
 ################################## JSON METHOD TO RETURN A DICTIONARY OF THE MODEL  ##################################
-    def json(self):                                                                         # JSON method
-        return {'name': self.name, 'price': self.price}                                     # Return a JSON representation of the model
+    def json(self):                                                                                         # JSON method
+        return {'name': self.name, 'price': self.price}                                                     # Return a JSON representation of the model
 
 
 #################### @CLASSMETHOD TO FIND A SINGLE ITEM IN THE LIST OF ITEMS NO JWT AUTH REQUIRED ####################
     @classmethod
     def find_by_name(cls, name):
-        connection = sqlite3.connect('data.db')                                                             # Connect to the database
-        cursor = connection.cursor()                                                                        # Start cursor
-
-        query = "SELECT * FROM items WHERE name=?"                                                          # Query to look for the particular item
-        result = cursor.execute(query, (name,))                                                             # Put the result in a variable, the name must be a tuple
-        row = result.fetchone()                                                                             # Fetch one row, no duplicates
-        connection.close()                                                                                  # Close connection
-
-        if row:                                                                                             # If the row of data exists
-            return cls(*row)                                                                                # cls calls the ItemModel __init__ method and fills in the
-                                                                                                            # parameters with the keyword *row
+        return cls.query.filter_by(name=name).first()                                                       # Return the cls (ItemModel), use query which is a SQLAlchemy built in function
+                                                                                                            # to create a query and filter by name and return the first row only
+                                                                                                            # SELECT * FROM -(__tablename__)- items WHERE name = name LIMIT 1
 
 #################### @CLASSMETHOD TO INSERT AN ITEM INTO THE DATABASE - USED IN POST & PUT METHODS ###################
-    def insert(self):
-        connection = sqlite3.connect('data.db')                                                             # Connect to the database
-        cursor = connection.cursor()                                                                        # Start cursor
+    def save_to_db(self):                                                                                   # Updating/Upserting to the DB
+        db.session.add(self)                                                                                # Tell SQLAlchemy to insert this object(self) into the database
+        db.session.commit()                                                                                 # Save to the database
 
-        query = "INSERT INTO items VALUES(?,?)"                                                             # Query to insert the item into DB
-        cursor.execute(query, (self.name, self.price))                                                      # Use cursor to execute query
-
-        connection.commit()                                                                                 # Save changes
-        connection.close()                                                                                  # Close connection
-
-######################## @CLASSMETHOD TO UPDATE AN ITEM IN THE DATABASE - USED IN PUT METHOD #########################
-    def update(self):
-        connection = sqlite3.connect('data.db')                                                             # Connect to the database
-        cursor = connection.cursor()                                                                        # Start cursor
-
-        query = "UPDATE items SET price=? WHERE name=?"                                                     # Query to update the price of a particular item name in the DB
-        cursor.execute(query, (self.price, self.name))                                                      # Use cursor to execute query, make sure arguments are in the correct order
-
-        connection.commit()                                                                                 # Save changes
-        connection.close()                                                                                  # Close connection
+######################## @CLASSMETHOD TO DELETE AN ITEM IN THE DATABASE - USED IN PUT METHOD #########################
+    def delete_from_db(self):
+        db.session.delete(self)                                                                             # Delete the object from the db
+        db.session.commit()                                                                                 # Save changes

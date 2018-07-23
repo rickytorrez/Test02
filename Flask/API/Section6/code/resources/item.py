@@ -29,7 +29,7 @@ class Item(Resource):
         item = ItemModel(name, data['price'])                                                               # ItemModel object
 
         try:
-            item.insert()                                                                                   # Insert the ItemModel object into the db
+            item.save_to_db()                                                                               # Save to DB the ItemModel object
         except:
             return {'message': 'An error occurred while inserting the item'}, 500                           # 500 Internal server error
 
@@ -37,35 +37,24 @@ class Item(Resource):
 
 ################################# ENDPOINT TO DELETE A NEW ITEM IN THE LIST OF ITEMS #################################
     def delete(self, name):
-        connection = sqlite3.connect('data.db')                                                             # Connect to the database
-        cursor = connection.cursor()                                                                        # Start cursor
-
-        query = "DELETE FROM items WHERE name=?"                                                            # Query to delete the item from the DB where the name matches
-        cursor.execute(query, (name,))                                                                      # Use cursor to execute query
-
-        connection.commit()                                                                                 # Save changes
-        connection.close()                                                                                  # Close connection
-
-        return {'message': 'Item deleted'}                                                                  # Return a message
+        item = ItemModel.find_by_name(name)                                                                 # Find the item by name
+        if item:                                                                                            # If the item exists
+            item.delete_from_db()                                                                           # Use the method in the ItemModel to remove the item from the DB
+        return {'message': 'Item deleted'}
 
 ################################# ENDPOINT TO UPDATE A NEW ITEM IN THE LIST OF ITEMS #################################
     def put(self, name):
         data = Item.parser.parse_args()                                                                     # Parse the arguments that come through the JSON payload and it will put the
                                                                                                             # valid ones in data
         item = ItemModel.find_by_name(name)                                                                 # Uses the Model find by name method and returns the ItemModel object
-        updated_item = ItemModel(name, data['price'])                                                       # Creates the updated item as an ItemModel object to be inserted
 
-        if item is None:                                                                                    # If item doesn't exist
-            try:
-                updated_item.insert()                                                                       # Add updated_item object to the database by using the ItemModel insert method
-            except:
-                return {'message': 'An error occurred while inserting the item'}, 500                       # 500 Internal server error
+        if item is None:                                                                                    # If the item is not found
+            item = ItemModel(name, data['price'])                                                           # We create a new instance ot the ItemModel
         else:                                                                                               # If item exists
-            try:
-                updated_item.update()                                                                       # Update the item with the new values
-            except:
-                return {'message': 'An error occurred while updating the item'}, 500                        # 500 Internal server error
-        return updated_item.json()                                                                          # Return the item in JSON format instead of an object
+            item.price = data['price']                                                                      # update the price
+
+        item.save_to_db()                                                                                   # Whether the item exists or not, we save to the db
+        return item.json()                                                                                  # Return the item in JSON format instead of an object
 
 
 ################################################# GET ALL THE ITEMS ##################################################

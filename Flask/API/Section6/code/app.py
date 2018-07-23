@@ -7,6 +7,8 @@ from resources.user import UserRegister                                         
 from resources.item import Item, ItemList                                                                   # Import from the correct file
 
 app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data.db'                                                 # Tell SQLAlchemy where the db is
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False                                                        # SQLAlchemy has its own mod tracker
 app.secret_key = 'eduardo'
 api = Api(app)
 
@@ -17,4 +19,6 @@ api.add_resource(ItemList, '/items')
 api.add_resource(UserRegister, '/register')
 
 if __name__ == '__main__':
+    from db import db                                                                                       # Circular imports
+    db.init_app(app)
     app.run(port=5000, debug=True)
