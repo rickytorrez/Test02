@@ -1,4 +1,3 @@
-import sqlite3
 from flask_restful import Resource, reqparse
 from flask_jwt import jwt_required
 from models.item import ItemModel
@@ -61,15 +60,6 @@ class Item(Resource):
 class ItemList(Resource):
 ##################################### ENDPOINT TO GET THE LIST OF ALL THE ITEMS ######################################
     def get(self):
-        connection = sqlite3.connect('data.db')                                                             # Connect to the database
-        cursor = connection.cursor()                                                                        # Start cursor
+        return {'items': [item.json() for item in ItemModel.query.all()]}                                   # Get all the items, iterate over them, turn them into JSON
 
-        query = "SELECT * FROM items"                                                                       # Query to select everything inside out items table
-        result = cursor.execute(query)                                                                      # Use cursor to execute query
-
-        items =[]                                                                                           # Create an empty list called items
-        for row in result:                                                                                  # Iterate through the result variable
-            items.append({'name':row[0], 'price': row[1]})                                                  # Append each item by using row[0] for name and row[1] for price
-
-        connection.close()                                                                                  # Close the connection, there's nothing to commit since we're not changing anything
-        return {'items': items}                                                                             # Return the list of items
+        # return {'items': list(map(lambdavx: x.json(), ItemModel.query.all()))}                            # Lambda Way

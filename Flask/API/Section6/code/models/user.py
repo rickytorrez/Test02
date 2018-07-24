@@ -10,10 +10,14 @@ class UserModel(db.Model):                                                      
     username = db.Column(db.String(80))                                                 # Create the username column
     password = db.Column(db.String(80))                                                 # Create the password column
 
-    def __init__(self, _id, username, password):
-        self.id = _id
+    def __init__(self, username, password):                                             # Id is automatically generated so no need to code for it
         self.username = username
         self.password = password
+
+#################################################### SAVE TO DB ######################################################
+    def save_to_db(self):
+        db.session.add(self)                                                            # Add object to DB
+        db.session.commit()                                                             # Commit object
 
 ############################################### FIND USER BY USERNAME ################################################
     @classmethod

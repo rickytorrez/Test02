@@ -25,10 +25,9 @@ class UserRegister(Resource):
         if UserModel.find_by_username(data['username']):                                # If the username alreqady exists
             return {"message": "A user with that username already exists"}, 400         # Send error message
 
-        connection = sqlite3.connect('data.db')                                         # Connect to the sqlite
-        cursor = connection.cursor()                                                    # Start the cursor
-        query = "INSERT INTO users VALUES (NULL, ?, ?)"                                 # Create query where id is null since it will auto increment
-        cursor.execute(query, (data['username'], data['password']))                     # Use cursor to execute the query - username and password must be a tuple
-        connection.commit()                                                             # Commit changes to DB
-        connection.close()                                                              # Close connection
+        user = UserModel(**data)                                                        # Fill in for each of the keys in data
+                                                                                        # (data['username'], data['password'])
+                                                                                        # It uses the JSON parser above
+        user.save_to_db()                                                               # Save to db
+
         return {"message": "User created successfully."}, 201                           # Return message
