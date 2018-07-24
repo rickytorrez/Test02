@@ -1,32 +1,28 @@
 from db import db
 
-class ItemModel(db.Model):                                                                                  # db.Model tells SQLAlchemy that Item model is a thing that we
+class StoreModel(db.Model):                                                                                 # db.Model tells SQLAlchemy that Item model is a thing that we
                                                                                                             # will save and retrieve from the database
-    __tablename__ = 'items'                                                                                 # Create the items DATABASE
+    __tablename__ = 'stores'                                                                                # Create the items DATABASE
 
     id = db.Column(db.Integer, primary_key=True)                                                            # Create the id Colummn
     name = db.Column(db.String(80))                                                                         # Create the name column
-    price = db.Column(db.Float(precision=2))                                                                # Create the price column with two decimal points
 
-    store_id = db.Column(db.Integer, db.ForeignKey('stores.id'))                                            # Foreign Key
-    store = db.relationship('StoreModel')                                                                   # Store refers to the item's store_id
+    items = db.relationship('ItemModel', lazy='dynamic')                                                    # Retrieve all the items that belong to a store
 
-    def __init__(self, name, price, store_id):                                                              # Take store_id to make relationship work
+    def __init__(self, name):
         self.name = name
-        self.price = price
-        self.store_id = store_id
 
 ################################## JSON METHOD TO RETURN A DICTIONARY OF THE MODEL  ##################################
     def json(self):                                                                                         # JSON method
-        return {'name': self.name, 'price': self.price}                                                     # Return a JSON representation of the model
+        return {'name': self.name, 'items': [item.json() for item in self.items.all()]}                     # Return a JSON representation of the model, store name and its items
 
 
 #################### @CLASSMETHOD TO FIND A SINGLE ITEM IN THE LIST OF ITEMS NO JWT AUTH REQUIRED ####################
     @classmethod
     def find_by_name(cls, name):
-        return cls.query.filter_by(name=name).first()                                                       # Return the cls (ItemModel), use query which is a SQLAlchemy built in function
+        return cls.query.filter_by(name=name).first()                                                       # Return the cls (StoreModel), use query which is a SQLAlchemy built in function
                                                                                                             # to create a query and filter by name and return the first row only
-                                                                                                            # SELECT * FROM -(__tablename__)- items WHERE name = name LIMIT 1
+                                                                                                            # SELECT * FROM -(__tablename__)- stores WHERE name = name LIMIT 1
 
 #################### @CLASSMETHOD TO INSERT AN ITEM INTO THE DATABASE - USED IN POST & PUT METHODS ###################
     def save_to_db(self):                                                                                   # Updating/Upserting to the DB

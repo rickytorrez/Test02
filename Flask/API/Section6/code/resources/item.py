@@ -9,6 +9,11 @@ class Item(Resource):
         required=True,
         help="This field cannot be left blank"
     )
+    parser.add_argument('store_id',
+        type=int,
+        required=True,
+        help="Every item needs a store id."
+    )
 ################################# ENDPOINT TO GET A SINGLE ITEM IN THE LIST OF ITEMS #################################
     @jwt_required()                                                                                         # JWT-required forces us to authenticate before we can do anything
     def get(self, name):
@@ -25,7 +30,7 @@ class Item(Resource):
 
         data = Item.parser.parse_args()                                                                     # Parse the arguments that come through the JSON payload and it will put the
                                                                                                             # valid ones in data
-        item = ItemModel(name, data['price'])                                                               # ItemModel object
+        item = ItemModel(name, **data)                                                                      # ItemModel object to create, **data refers to (data['price'], data['store_id'])
 
         try:
             item.save_to_db()                                                                               # Save to DB the ItemModel object
@@ -48,7 +53,7 @@ class Item(Resource):
         item = ItemModel.find_by_name(name)                                                                 # Uses the Model find by name method and returns the ItemModel object
 
         if item is None:                                                                                    # If the item is not found
-            item = ItemModel(name, data['price'])                                                           # We create a new instance ot the ItemModel
+            item = ItemModel(name, **data)                                                                  # We create a new instance ot the ItemModel, **data refers to (data['price'], data['store_id'])
         else:                                                                                               # If item exists
             item.price = data['price']                                                                      # update the price
 
