@@ -1,3 +1,5 @@
+import os                                                                                                   # Enable Heroku database
+
 from flask import Flask
 from flask_restful import Api
 from flask_jwt import JWT
@@ -8,14 +10,10 @@ from resources.item import Item, ItemList                                       
 from resources.store import Store, StoreList                                                                # Import the Store Resource and StoreList Resource
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data.db'                                                 # Tell SQLAlchemy where the db is
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:///data.db' )                # Tell SQLAlchemy where the db is, os.environ.get('DB_URL') for deployment, sqlite for dev
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False                                                        # SQLAlchemy has its own mod tracker
 app.secret_key = 'eduardo'
 api = Api(app)
-
-@app.before_first_request                                                                                   # It runs the method below it before anything else
-def create_tables():
-    db.create_all()                                                                                         # Creates the schema and tables according to import of resources and the imports of models inside resources
 
 jwt = JWT(app, authenticate, identity)                                                                      # Creates a new endpoint /auth
 
