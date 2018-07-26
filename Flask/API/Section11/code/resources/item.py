@@ -29,7 +29,7 @@ class Item(Resource):
 
         data = Item.parser.parse_args()
 
-        item = ItemModel(name, **data)                                                                          # Store_id and price are being passed as arguments
+        item = ItemModel(name, **data)
 
         try:
             item.save_to_db()
@@ -53,7 +53,7 @@ class Item(Resource):
         if item:
             item.price = data['price']
         else:
-            item = ItemModel(name, **data)                                                                      # Store_id and price are being passed as arguments
+            item = ItemModel(name, **data)
 
         item.save_to_db()
 
@@ -62,4 +62,4 @@ class Item(Resource):
 
 class ItemList(Resource):
     def get(self):
-        return {'items': [x.json() for x in ItemModel.find_all()]}                                              # Return the list of all the items in JSON format
+        return {'items': list(map(lambda x: x.json(), ItemModel.query.all()))}

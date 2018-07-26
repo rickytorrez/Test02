@@ -12,19 +12,9 @@ class UserModel(db.Model):
         self.username = username
         self.password = password
 
-    def json(self):                                                                     # Method needed to return objects in JSON format
-        return {
-            'id': self.id,
-            'username':self.username
-        }
-
     def save_to_db(self):
         db.session.add(self)
-        db.session.commit
-
-    def delete_from_db(self):                                                           # Mehod to delete from db
-        db.session.delete(self)
-        db.session.commit
+        db.session.commit()
 
     @classmethod
     def find_by_username(cls, username):
