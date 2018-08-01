@@ -1,9 +1,15 @@
 from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response                                    # Response object
+from rest_framework import status                                               # Status contains a list of different HTTP status codes
+
+
+from . import serializers                                                       # Import serializers.py module
 
 class HelloAPIView(APIView):
     """Test API View."""
+
+    serializer_class = serializers.HelloSerializer                              # Tells Django to use serializer class
 
     def get(self, request, format=None):
         """Returns a list of APIView features"""
@@ -19,3 +25,32 @@ class HelloAPIView(APIView):
                                                                                 # It must be passed a dictionary to return the response
                                                                                 # The Response is a dictionary that is converted to JSON to be outputed
                                                                                 # to the screen
+
+    def post(self, request):
+        """Create a hello message with our name."""
+
+        serializer = serializers.HelloSerializer(data=request.data)             # Creates a serializer object with our HelloSerializer class and passes
+                                                                                # in the data from the request.data attribute
+
+        if serializer.is_valid():                                               # If the serializer is valid:
+            name = serializer.data.get('name')                                  # Retrives the specific data inside the request.data, in this case, the name
+            message = 'Hello {0}'.format(name)                                  # Creates a message passing the post name
+            return Response ({'message': message})                              # Returns the message
+        else:
+            return Response(                                                    # Return the serializer error and HTTP error code
+                serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def put(self, request, pk=None):                                            # pk= Primary key
+        """Handles updating an object."""
+
+        return Response({'method': 'put'})
+
+    def patch(self, request, pk=None):
+        """Patch request, only updates fields provided in the request."""
+
+        return Response({'method': 'patch'})
+
+    def delete(self, request, pk=None):
+        """Deletes an object."""
+
+        return Response({'method':'delte'})
