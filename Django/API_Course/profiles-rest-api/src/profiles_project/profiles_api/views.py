@@ -1,4 +1,7 @@
 from django.shortcuts import render
+
+from rest_framework import viewsets                                             # Viewsets
+
 from rest_framework.views import APIView
 from rest_framework.response import Response                                    # Response object
 from rest_framework import status                                               # Status contains a list of different HTTP status codes
@@ -54,3 +57,17 @@ class HelloAPIView(APIView):
         """Deletes an object."""
 
         return Response({'method':'delte'})
+
+
+class HelloViewSet(viewsets.ViewSet):                                           # Viewsets
+    """TEST API ViewSet."""
+
+    def list(self,request):                                                     # Equivalent to GET
+        """Return a hello message."""
+        a_viewset = [
+            'Uses actions(list, create, retrieve, update, partial_update)',
+            'Automatically maps to URLs uring Routers',
+            'Provides more functionality with less code'
+        ]
+
+        return Response({'message':'Hello!', 'a_viewset':a_viewset})
