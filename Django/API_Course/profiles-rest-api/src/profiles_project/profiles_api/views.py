@@ -5,7 +5,8 @@ from rest_framework import viewsets                                             
 from rest_framework.views import APIView
 from rest_framework.response import Response                                    # Response object
 from rest_framework import status                                               # Status contains a list of different HTTP status codes
-from rest_framework.authentication import TokenAuthentication
+from rest_framework.authentication import TokenAuthentication                   # Token for Security
+from rest_framework import filters                                              # Search -ishhh
 
 from . import serializers                                                       # Import serializers.py module
 from . import models
@@ -118,3 +119,6 @@ class UserProfileViewSet(viewsets.ModelViewSet):
 
     authentication_classes = (TokenAuthentication,)                             # Authentication classes, Tuple --- you can also use session authentication
     permission_classes = (permissions.UpdateOwnProfile,)                        # You can add multiple permissions to a particular viewset
+
+    filter_backends = (filters.SearchFilter,)                                   #List the filters you want to have as options on viewset
+    search_fields = ('name', 'email',)                                          # Tell it which fields we want the user to filter by
