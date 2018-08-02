@@ -9,6 +9,8 @@ from rest_framework import status                                               
 
 from . import serializers                                                       # Import serializers.py module
 
+from . import models
+
 class HelloAPIView(APIView):
     """Test API View."""
 
@@ -106,3 +108,10 @@ class HelloViewSet(viewsets.ViewSet):                                           
         """Handles removing an object"""
 
         return Response({'http_method':'DELETE'})
+
+
+class UserProfileViewSet(viewsets.ModelViewSet):
+    """Handles creating, reading and updating profiles."""
+
+    serializer_class = serializers.UserProfileSerializer                        # Since the serializer has which model to use on the meta class it knows which model it can interact with
+    queryset = models.UserProfile.objects.all()                                 # Lists all the objects in the database
