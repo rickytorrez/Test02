@@ -5,11 +5,11 @@ from rest_framework import viewsets                                             
 from rest_framework.views import APIView
 from rest_framework.response import Response                                    # Response object
 from rest_framework import status                                               # Status contains a list of different HTTP status codes
-
+from rest_framework.authentication import TokenAuthentication
 
 from . import serializers                                                       # Import serializers.py module
-
 from . import models
+from . import permissions
 
 class HelloAPIView(APIView):
     """Test API View."""
@@ -115,3 +115,6 @@ class UserProfileViewSet(viewsets.ModelViewSet):
 
     serializer_class = serializers.UserProfileSerializer                        # Since the serializer has which model to use on the meta class it knows which model it can interact with
     queryset = models.UserProfile.objects.all()                                 # Lists all the objects in the database
+
+    authentication_classes = (TokenAuthentication,)                             # Authentication classes, Tuple --- you can also use session authentication
+    permission_classes = (permissions.UpdateOwnProfile,)                        # You can add multiple permissions to a particular viewset
