@@ -13,6 +13,8 @@ router.register('hello-viewset', views.HelloViewSet, base_name="hello-viewset") 
 
 router.register('profile', views.UserProfileViewSet)                            # Base_name doesnt need to be specified when a model is given on the view set
 
+router.register('login', views.LoginViewSet, base_name="login")
+
 urlpatterns = [
     url(r'^hello-view/', views.HelloAPIView.as_view()),                         # It maps to our api view and it must be returned as a view object
     url(r'', include(router.urls))                                              # Assign a blank string and include a router.urls; this way the router will create a url for us

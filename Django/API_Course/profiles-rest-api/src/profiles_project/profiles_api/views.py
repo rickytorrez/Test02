@@ -7,6 +7,8 @@ from rest_framework.response import Response                                    
 from rest_framework import status                                               # Status contains a list of different HTTP status codes
 from rest_framework.authentication import TokenAuthentication                   # Token for Security
 from rest_framework import filters                                              # Search -ishhh
+from rest_framework.authtoken.serializers import AuthTokenSerializer
+from rest_framework.authtoken.views import ObtainAuthToken
 
 from . import serializers                                                       # Import serializers.py module
 from . import models
@@ -122,3 +124,13 @@ class UserProfileViewSet(viewsets.ModelViewSet):
 
     filter_backends = (filters.SearchFilter,)                                   # List the filters you want to have as options on viewset
     search_fields = ('name', 'email',)                                          # Tell it which fields we want the user to filter by - (Search by)
+
+
+class LoginViewSet(viewsets.ViewSet):
+    """Checks email and password and returns auth token"""
+
+    serializer_class = AuthTokenSerializer
+
+    def create(self, request):
+        """Use the ObtainAuthToken APIView to validate and create a token."""
+        return ObtainAuthToken().post(request)
