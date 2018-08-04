@@ -120,5 +120,5 @@ class UserProfileViewSet(viewsets.ModelViewSet):
     authentication_classes = (TokenAuthentication,)                             # Authentication classes, Tuple --- you can also use session authentication
     permission_classes = (permissions.UpdateOwnProfile,)                        # You can add multiple permissions to a particular viewset
 
-    filter_backends = (filters.SearchFilter,)                                   #List the filters you want to have as options on viewset
-    search_fields = ('name', 'email',)                                          # Tell it which fields we want the user to filter by
+    filter_backends = (filters.SearchFilter,)                                   # List the filters you want to have as options on viewset
+    search_fields = ('name', 'email',)                                          # Tell it which fields we want the user to filter by - (Search by)
