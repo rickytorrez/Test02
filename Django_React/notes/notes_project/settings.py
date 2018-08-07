@@ -55,7 +55,7 @@ MIDDLEWARE = [
 ]
 
 CORS_ORIGIN_WHITELIST = (
-    'localhost:3000',                                                           ## Everything from localhost 3000 is allowed to access our API
+    'localhost:3000',                                                           # Everything from localhost 3000 is allowed to access our API
 )
 
 ROOT_URLCONF = 'notes_project.urls'
@@ -128,11 +128,11 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-ASGI_APPLICATION = "notes_project.routing.application" #websocket
+ASGI_APPLICATION = "notes_project.routing.application"
 
-CHANNEL_LAYERS = {
+CHANNEL_LAYERS = {                                                              # Bridge between channel package and message broker
     'default': {
-        'BACKEND': 'channel_redis.core.RedisChannelLayer',
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
         'CONFIG': {
             'HOSTS': [('127.0.0.1', 6379)],
         },

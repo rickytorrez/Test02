@@ -9,6 +9,7 @@ djangorestframework = "*"
 django-cors-headers = "*"
 channels = "*"
 channels-redis = "*"
+redis = "*"
 
 [dev-packages]
 
