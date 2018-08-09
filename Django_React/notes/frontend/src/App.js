@@ -15,7 +15,7 @@ class App extends Component {
         </header>
         <p className="App-intro">
           <h1> Hello </h1>
-          <Button color="danger">Hello</Button>
+          <Button color="danger">Hello!</Button>
           To get started, edit <code>src/App.js</code> and save to reload.
         </p>
       </div>
