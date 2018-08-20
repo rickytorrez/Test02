@@ -69,7 +69,7 @@ class HelloViewSet(viewsets.ViewSet):                                           
 
     serializer_class = serializers.HelloSerializer
 
-    def list(self,request):                                                     # Equivalent to GET
+    def list(self,request):                                                     # Equivalent to GET, shows list on reqest
         """Return a hello message."""
         a_viewset = [
             'Uses actions(list, create, retrieve, update, partial_update)',
